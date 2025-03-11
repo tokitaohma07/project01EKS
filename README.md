@@ -289,3 +289,97 @@ Save & Build Now ✅
 ✔️ App updates with new commits
 
 Let me know if you need any clarifications! 🚀🔥
+
+
+
+
+To delete all services, deployments, and resources related to your Flask application in AWS EKS, follow these steps carefully.
+
+🛠️ Step 1: Delete Kubernetes Resources
+Run the following commands to delete services, deployments, and pods:
+
+bash
+Copy
+Edit
+kubectl delete service flask-service
+kubectl delete deployment flask-app
+To confirm deletion:
+
+bash
+Copy
+Edit
+kubectl get all
+If the service still exists, you may need to force delete:
+
+bash
+Copy
+Edit
+kubectl delete service flask-service --force --grace-period=0
+
+
+🛠️ Step 2: Delete Namespace (If Created)
+If your resources were inside a specific namespace, delete it:
+
+bash
+Copy
+Edit
+kubectl delete namespace your-namespace
+
+
+
+🛠️ Step 3: Delete EKS Cluster
+⚠️ Warning: This will remove the entire cluster!
+
+bash
+Copy
+Edit
+eksctl delete cluster --name flask-eks-cluster
+This will delete:
+✅ EKS cluster
+✅ Node groups
+✅ Associated AWS resources
+
+To confirm:
+
+bash
+Copy
+Edit
+aws eks list-clusters
+
+
+🛠️ Step 4: Delete ECR Repository (Optional)
+If you no longer need the Docker images in AWS ECR:
+
+bash
+Copy
+Edit
+aws ecr delete-repository --repository-name flask-app --force
+To list repositories before deleting:
+
+bash
+Copy
+Edit
+aws ecr describe-repositories
+
+
+🛠️ Step 5: Verify Everything is Deleted
+Run:
+
+bash
+Copy
+Edit
+kubectl get all
+eksctl get cluster
+aws ecr describe-repositories
+Everything should be empty or not found.
+
+Let me know if you face any issues! 🚀
+
+
+
+
+
+
+
+
+
